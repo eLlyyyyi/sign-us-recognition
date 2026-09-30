@@ -1,0 +1,28 @@
+.DS_Store
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Private or redistributability-sensitive assets
+data/
+artifacts/
+models/
+checkpoints/
+*.h5
+*.keras
+*.pkl
+*.joblib
+*.npy
+*.npz
+*.mp4
+*.mov
+*.avi
+
+# Generated analysis outputs
+error_analysis/
+outputs/
+logs/
