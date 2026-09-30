@@ -8,7 +8,7 @@
 
 - MediaPipe 기반 손·포즈·얼굴 랜드마크 추출
 - 좌표 정규화, 관절 각도 및 상대 위치를 결합한 시계열 특징 구성
-- Conv1D와 stacked LSTM 기반 분류 모델 학습
+- Conv1D와 Bidirectional LSTM 기반 분류 모델 학습
 - 사람 단위 교차 검증과 holdout 평가
 - 노이즈·속도 변화·좌우 반전·프레임 마스킹 기반 데이터 증강
 - 앙상블 및 test-time augmentation을 활용한 오류 분석
@@ -20,12 +20,26 @@
 src/
 ├── asl/
 │   ├── extract_keypoints.py  # 영상에서 랜드마크 시퀀스 추출
-│   ├── train_kfold.py        # 260차원 특징 기반 교차 검증 학습
-│   └── error_analysis.py     # 앙상블·TTA 평가와 CSV 오류 분석
+│   ├── train_final.py        # 최종 10배 증강·사람 단위 4-fold 학습
+│   ├── evaluate_ensemble.py  # 최종 4개 fold 앙상블 평가
+│   └── experiments/          # 최종 결정 전 260차원 후속 실험 기록
 └── ksl/
     ├── train.py              # 64차원 hybrid feature 기반 학습·튜닝
     └── realtime_demo.py      # 웹캠 기반 실시간 추론
 ```
+
+## Final ASL experiment
+
+실제 최종 모델 생성에 사용한 `ASL_Citizen/asl_final`의 학습·평가 코드를 기준으로 공개본을 구성했습니다.
+
+- 사람 단위 4-fold 교차 검증
+- 원본 포함 10배 데이터 증강
+- Conv1D + Bidirectional LSTM
+- 평균 검증 정확도: **74.58%**
+- 단일 best fold holdout 정확도: **74.40%**
+- 4-fold ensemble holdout 정확도: **82.86%**
+
+위 수치는 로컬 최종 실험 로그에서 옮긴 값이며, 원본 데이터와 가중치는 재배포하지 않습니다.
 
 ## Setup
 
@@ -51,4 +65,3 @@ pip install -r requirements.txt
 ## Tech stack
 
 Python · TensorFlow/Keras · MediaPipe · OpenCV · NumPy · scikit-learn · Optuna
-
